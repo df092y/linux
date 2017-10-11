@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<script>
+		function signInCallback(authResult) {
+			if (authResult['code']) {
+				$('#signinButton').attr('style', 'display: none');
+				$.ajax({
+					type: 'POST',
+					url: '/gconnect?state={{STATE}}',
+					processData: false,
+					data: authResult['code'],
+					contentType: 'application/octet-stream; charset=utf-8',
+					success: function(result) {
+				        if (result) {
+				        	$('#login').html('Logging in...')
+							window.location.href = "/catalog";
+						} else if (authResult['error']) {
+							console.log('There was an error: ' + authResult['error']);
+						} else {
+							$('#login').html('Failed to make a server-side call. Check your configuration and console.');
+						}
+					}
+				});
+			}
+		}
+	</script>
+	<div class="wrapper">
+		<div class="content">
+			<div id="login" class="container container--login">
+				<div id="signInButton">
+					<span class="g-signin"
+						data-scope="openid email"
+						data-clientid="116672319418-knk7ot848qi944u8evdvubsvcjqkck55.apps.googleusercontent.com"
+						data-redirecturi="postmessage"
+						data-accesstype="offline"
+						data-cookiepolicy="single_host_origin"
+						data-callback="signInCallback"
+						data-approvalprompt="force">
+					</span>
+				</div>
+
+				<!-- <button class="login__button login__button--google">Login with Google</button> -->
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

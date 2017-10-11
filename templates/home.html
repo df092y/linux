@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class="row flex">
+		<div class="col4">
+			<div class="">
+				<h6 class="">
+					<span class="top">Genres</span>
+					<span class=""></span>
+				</h6>
+				<ul class="">
+					{% for genre in genres %}
+						<a href="{{url_for('showGenre', catalog_id = genre.id )}}">
+							<li class="">
+								<span class="">{{genre.name}}</span>
+							</li>
+						</a>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="col8 float">
+			<div class="">
+				<h6 class="">
+					<span class="top">Games</span>
+					<span class=""></span>
+				</h6>
+				<ul class="">
+					{% for game in games %}
+						<a href="{{url_for('showGame', catalog_id = game.genre_id ,item_id = game.id )}}">
+							<li class="">
+								<span class="">{{game.name}}</span>
+								<span class="">({{game.genre.name}})</span>
+							</li>
+						</a>
+					{% endfor %}
+				</ul>
+
+				{% if 'username' in session %}
+					<a href="{{url_for('addGame')}}" class="">Add Item</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
